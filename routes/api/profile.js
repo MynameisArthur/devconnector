@@ -64,6 +64,7 @@ router.post('/', [auth, [
     if (bio) profileFields.bio = bio;
     if (status) profileFields.status = status;
     if (githubusername) profileFields.githubusername = githubusername;
+    //convert skills string into skills array
     if (skills) {
         profileFields.skills = skills.split(',').map(skill => skill.trim());
     }
