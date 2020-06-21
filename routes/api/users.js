@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/User');
 const config = require('config');
+const { serverError } = require('../../utils/functions');
 
 //@route POST/api/users
 //@desc Register user
@@ -67,8 +68,7 @@ router.post('/', [
             }
         );
     } catch (err) {
-        console.error(err.message);
-        return res.status(500).send('Server error');
+        serverError(err);
     }
 });
 

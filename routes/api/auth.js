@@ -6,6 +6,7 @@ const { check, validationResult } = require('express-validator/check');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { serverError } = require('../../utils/functions');
 
 //@route GET/api/auth
 //@desc Test route
@@ -16,8 +17,7 @@ router.get('/', auth, async (req, res) => {
         const user = await User.findById(req.user.id).select('-password');
         res.json(user)
     } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
+        serverError(err);
     }
 });
 
@@ -77,8 +77,7 @@ router.post('/', [
             }
         );
     } catch (err) {
-        console.error(err.message);
-        return res.status(500).send('Server error');
+        serverError(err);
     }
 });
 
