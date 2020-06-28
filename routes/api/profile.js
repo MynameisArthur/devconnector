@@ -5,6 +5,7 @@ const router = express.Router();
 const auth = require('../../middleware/auth');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 const { check, validationResult } = require('express-validator/check');
 const { serverError } = require('../../utils/functions');
 
@@ -133,6 +134,8 @@ router.get('/user/:user_id', async (req, res) => {
 //@access Private
 router.delete('/', auth, async (req, res) => {
     try {
+        //Remove user posts
+        await Post.deleteMany({ user: req.user });
         //Remove profile
         await Profile.findOneAndRemove({ user: req.user.id });
         //Remove user
@@ -247,18 +250,20 @@ router.put('/education', [auth, [
 //@route DELETE api/profile/education/:edu_id
 //@desc Delete education from profile
 //@access Private
-router.delete('/education/:exp_id', auth, async (req, res) => {
+
+router.delete('/education/:edu_id', auth, async (req, res) => {
     try {
-        const profile = await Profile.findOne({ user: req.user.id });
-        // Get remove index
-        const removeIndex = profile.education.map(item => item.id).indexOf(req.params.edu_id);
-        profile.education.splice(removeIndex, 1);
-        await profile.save();
-        res.json(profile);
-    } catch (err) {
+        const foundProfile = await Profile.findOne({ user: req.user.id });
+        foundProfile.education = foundProfile.education.filter(
+            (edu) => edu._id.toString() !== req.params.edu_id
+        );
+        await foundProfile.save();
+        return res.status(200).json(foundProfile);
+    } catch (error) {
         serverError(err);
     }
 });
+
 
 //@route GET api/profile/github/:username
 //@desc Get user repos from github
