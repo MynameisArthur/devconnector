@@ -13,7 +13,7 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
         loading ? (<Spinner />) : (<>
             <h1 className="large text-pr">Posts</h1>
             <p className="lead">
-                <i className="fas fa-user"></i>Welcome to the community
+                <i className="fas fa-user"></i> Welcome to the community
             </p>
 
             <div className="posts">
