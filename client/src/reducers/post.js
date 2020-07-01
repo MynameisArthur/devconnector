@@ -18,6 +18,12 @@ export default function (state = initialState, action) {
                 posts: payload,
                 loading: false
             };
+        case types.GET_POST:
+            return {
+                ...state,
+                post: payload,
+                loading: false
+            };
         case types.ADD_POST:
             return {
                 ...state,
@@ -41,6 +47,19 @@ export default function (state = initialState, action) {
                 ...state,
                 posts: state.posts.map(post => post._id === payload.id ? { ...post, likes: payload.likes } : post),
                 loading: false
+            };
+        case types.ADD_COMMENT:
+            return {
+                ...state,
+                post: { ...state.post, comments: payload }
+            };
+        case REMOVE_COMMENT:
+            return {
+                ...state,
+                post: {
+                    ...state.post,
+                    comments: state.post.comments
+                }
             };
         default:
             return state;

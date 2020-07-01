@@ -22,6 +22,27 @@ export const getPosts = () => async dispatch => {
         });
     }
 };
+
+//Get post
+
+export const getPost = (id) => async dispatch => {
+    try {
+        const res = await axios.get(`/api/posts/${id}`);
+        dispatch({
+            type: types.GET_POST,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch({
+            type: types.POST_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status
+            }
+        });
+    }
+};
+
 // Add like
 export const addLike = (id) => async dispatch => {
     try {
@@ -89,6 +110,48 @@ export const addPost = (formData) => async dispatch => {
             payload: res.data
         });
         dispatch(setAlert('Post Created', 'success'));
+    } catch (err) {
+        dispatch({
+            type: types.POST_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status
+            }
+        });
+    }
+};
+
+// Add comment
+export const addComment = (postId, formData) => async dispatch => {
+    const config = {
+        'Content-Type': 'application/json'
+    };
+    try {
+        const res = await axios.post(`/api/posts/comment/${postId}`, formData, config);
+        dispatch({
+            type: types.ADD_COMMENT,
+            payload: res.data
+        });
+        dispatch(setAlert('Comment Added', 'success'));
+    } catch (err) {
+        dispatch({
+            type: types.POST_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status
+            }
+        });
+    }
+};
+// Delete comment
+export const deleteComment = (postId, commentId) => async dispatch => {
+    try {
+        const res = await axios.delete(`/api/posts/comment/${postId}/${commentId}`);
+        dispatch({
+            type: types.REMOVE_COMMENT,
+            payload: commentId
+        });
+        dispatch(setAlert('Comment Removed', 'success'));
     } catch (err) {
         dispatch({
             type: types.POST_ERROR,
