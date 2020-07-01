@@ -1,4 +1,4 @@
-import { REGISTER_FAIL, REGISTER_SUCCESS, USER_LOADED, AUTH_ERROR, LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT, ACCOUNT_DELETED } from '../actions/types';
+import { dcTypes as types } from '../actions/types';
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -10,8 +10,8 @@ const initialState = {
 export default function (state = initialState, action) {
     const { type, payload } = action;
     switch (type) {
-        case REGISTER_SUCCESS:
-        case LOGIN_SUCCESS:
+        case types.REGISTER_SUCCESS:
+        case types.LOGIN_SUCCESS:
             localStorage.setItem('token', payload.token);
             return {
                 ...state,
@@ -19,11 +19,11 @@ export default function (state = initialState, action) {
                 isAuthenticated: true,
                 loading: false
             };
-        case REGISTER_FAIL:
-        case AUTH_ERROR:
-        case LOGIN_FAIL:
-        case LOGOUT:
-        case ACCOUNT_DELETED:
+        case types.REGISTER_FAIL:
+        case types.AUTH_ERROR:
+        case types.LOGIN_FAIL:
+        case types.LOGOUT:
+        case types.ACCOUNT_DELETED:
             localStorage.removeItem('token');
             return {
                 ...state,
@@ -31,7 +31,7 @@ export default function (state = initialState, action) {
                 isAuthenticated: false,
                 loading: false
             };
-        case USER_LOADED:
+        case types.USER_LOADED:
             return {
                 ...state,
                 isAuthenticated: true,

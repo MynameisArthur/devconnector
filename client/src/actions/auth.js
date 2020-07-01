@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { setAlert } from './alert';
-import { REGISTER_FAIL, REGISTER_SUCCESS, USER_LOADED, AUTH_ERROR, LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT, CLEAR_PROFILE } from './types';
+import { dcTypes as types } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
 // Load User
@@ -11,12 +11,12 @@ export const loadUser = () => async dispatch => {
     try {
         const res = await axios.get('/api/auth');
         dispatch({
-            type: USER_LOADED,
+            type: types.USER_LOADED,
             payload: res.data
         });
     } catch (err) {
         dispatch({
-            type: AUTH_ERROR
+            type: types.AUTH_ERROR
         });
     }
 };
@@ -31,7 +31,7 @@ export const login = (email, password) => async dispatch => {
     try {
         const res = await axios.post('/api/auth', body, config);
         dispatch({
-            type: LOGIN_SUCCESS,
+            type: types.LOGIN_SUCCESS,
             payload: res.data
         });
         dispatch(loadUser());
@@ -41,7 +41,7 @@ export const login = (email, password) => async dispatch => {
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
         }
         dispatch({
-            type: LOGIN_FAIL
+            type: types.LOGIN_FAIL
         });
     }
 };
@@ -58,7 +58,7 @@ export const register = ({ name, email, password }) => async dispatch => {
     try {
         const res = await axios.post('/api/users', body, config);
         dispatch({
-            type: REGISTER_SUCCESS,
+            type: types.REGISTER_SUCCESS,
             payload: res.data
         });
         dispatch(loadUser());
@@ -68,15 +68,15 @@ export const register = ({ name, email, password }) => async dispatch => {
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
         }
         dispatch({
-            type: REGISTER_FAIL
+            type: types.REGISTER_FAIL
         });
     }
 };
 
 //Logout/Clear Profile
 export const logout = () => dispatch => {
-    dispatch({ type: CLEAR_PROFILE });
-    dispatch({ type: LOGOUT });
+    dispatch({ type: types.CLEAR_PROFILE });
+    dispatch({ type: types.LOGOUT });
 };
 
 
