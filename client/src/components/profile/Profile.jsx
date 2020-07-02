@@ -57,9 +57,10 @@ const Profile = ({
                         }
                     </>) : (<h4>No education credentials</h4>)}
                 </div>
-                {profile.githubusername && (
+                {profile.githubusername ? (
                     <ProfileGithub username={profile.githubusername} />
-                )}
+                ) : (<h4>No github repos found</h4>)
+                }
             </div>
         </>
     );
