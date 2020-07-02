@@ -13,7 +13,7 @@ const CommentForm = ({ postId, addComment }) => {
             </div>
             <form className="form my-1" onSubmit={e => {
                 e.preventDefault();
-                addComment({ text });
+                addComment(postId, { text });
                 setText('');
             }}>
                 <textarea
